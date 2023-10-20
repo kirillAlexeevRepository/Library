@@ -1,22 +1,11 @@
 package com.kirillalekseev.spring.security.entity;
 
-import com.kirillalekseev.spring.security.dao.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
 
 
 @Entity
     @Table(name = "users")
-    public class User  //implements UserDetails {
-{
+    public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "username")
@@ -28,9 +17,17 @@ import java.util.Collections;
     @Column(name = "enabled")
     private byte enabled;
 
-    @Column(name = "salary")
-    private int salary;
+    @Column(name = "first_name")
+    private String firstName;
 
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "photo_data")
+    private byte[] photoData;
 
     public User() {
     }
@@ -38,8 +35,6 @@ import java.util.Collections;
     public String getUsername() {
         return username;
     }
-
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -62,23 +57,45 @@ import java.util.Collections;
         this.enabled = enabled;
     }
 
-    public int getSalary() {
-        return salary;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public byte[] getPhotoData() {
+        return photoData;
+    }
+
+    public void setPhotoData(byte[] photoData) {
+        this.photoData = photoData;
+    }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
-                ", Password='" + Password + '\'' +
-                ", enabled=" + enabled +
-                ", salary=" + salary +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

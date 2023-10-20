@@ -8,6 +8,9 @@
 <table>
     <tr>
         <th>Username</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone Number</th>
     </tr>
     <c:forEach var="user" items="${allUser}">
 
@@ -17,12 +20,20 @@
 
         <tr>
             <td>${user.username}</td>
+            <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.phoneNumber}</td>
             <td><input type="button" value="change password"
                        onclick="window.location.href = '${changePasswordButton}'"/>
 
         </tr>
 
     </c:forEach>
+    <c:url var="addNewUserButton" value="addNewUser">
+    </c:url>
+    <td><input type="button" value="add new user"
+               onclick="window.location.href = '${addNewUserButton}'"/>
+
 
 </table>
 </body>

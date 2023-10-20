@@ -30,4 +30,10 @@ public class UserServiceImpl implements UserService {
     public void putNewPassword(String password, String username) {
         userDAO.putNewPassword(password, username);
     }
+
+    @Override
+    @Transactional
+    public void putOneUser(User user){
+        userDAO.putOneUser(user);
+    }
 }

@@ -12,5 +12,6 @@ public interface UserDAO {
 
     void  putNewPassword(String password , String username);
 
+    void putOneUser(User user);
 }
 

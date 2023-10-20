@@ -47,14 +47,30 @@ public class MyController {
         model.addAttribute("allUser" ,allUser);
         return"view_for_managers";
     }
+
     @GetMapping("/change_password")
     public String change_user_password(@ModelAttribute("user")User user){
     return "change_user_password";
     }
-
     @PostMapping("/putPassword")
     public String putPasswordinUser(@ModelAttribute("user")User user ){
        userService.putNewPassword(hashPassword(user.getPassword()), user.getUsername());
         return"redirect:/manager_info";
     }
+
+    @GetMapping("/addNewUser")
+    public String addNewUser(Model model){
+        User user = new User();
+        model.addAttribute("user" ,user);
+        return "Add-new-user";
+    }
+
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user")User user ){
+        user.setPassword(hashPassword(user.getPassword()));
+        user.setEnabled((byte)1);
+        userService.putOneUser(user);
+        return "redirect:/manager_info";
+    }
+
 }

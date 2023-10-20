@@ -12,4 +12,6 @@ public interface UserService {
 
     public void putNewPassword(String password, String username);
 
+    void putOneUser(User user);
+
 }

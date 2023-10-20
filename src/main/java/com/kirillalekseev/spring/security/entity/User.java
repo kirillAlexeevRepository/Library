@@ -3,11 +3,10 @@ package com.kirillalekseev.spring.security.entity;
 import javax.persistence.*;
 
 
-@Entity
+    @Entity
     @Table(name = "users")
     public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "username")
     private String username;
 

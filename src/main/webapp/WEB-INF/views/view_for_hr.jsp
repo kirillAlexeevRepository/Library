@@ -13,7 +13,6 @@
 <c:forEach var="users" items="${allUser}">
     <tr>
         <td>${users.username}
-        <td>${users.salary}
     </tr>
 </c:forEach>
 </table>

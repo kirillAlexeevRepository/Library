@@ -39,4 +39,9 @@ public class UserDaoImpl implements UserDAO{
         query.setParameter("username" , username);
         query.executeUpdate();
     }
+
+    public void putOneUser(User user){
+        Session session = sessionFactory.getCurrentSession();
+        session.save(user);
+    }
 }

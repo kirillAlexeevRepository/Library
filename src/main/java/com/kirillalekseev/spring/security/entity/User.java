@@ -28,6 +28,9 @@ import javax.persistence.*;
     @Column(name = "photo_data")
     private byte[] photoData;
 
+    @OneToOne(mappedBy = "authUser",cascade = CascadeType.ALL)
+    private Authorities userAuthorities;
+
     public User() {
     }
 
@@ -88,7 +91,15 @@ import javax.persistence.*;
         this.photoData = photoData;
     }
 
-    @Override
+        public Authorities getUserAuthorities() {
+            return userAuthorities;
+        }
+
+        public void setUserAuthorities(Authorities userAuthorities) {
+            this.userAuthorities = userAuthorities;
+        }
+
+        @Override
     public String toString() {
         return "User{" +
                 ", username='" + username + '\'' +

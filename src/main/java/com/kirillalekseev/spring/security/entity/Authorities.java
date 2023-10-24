@@ -1,28 +1,32 @@
 package com.kirillalekseev.spring.security.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 @Entity
 @Table(name ="authorities" )
 public class Authorities {
-    @Id
-    @Column(name = "username")
-    private String Username;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username")
+    private User authUser;
 
     @Column(name = "authority")
     private String authority;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @Column(name = "id")
+    private Integer id;
+
     public Authorities() {
     }
 
-    public String getUsername() {
-        return Username;
+    public User getAuthUser() {
+        return authUser;
     }
 
-    public void setUsername(String username) {
-        Username = username;
+    public void setAuthUser(User authUser) {
+        this.authUser = authUser;
     }
 
     public String getAuthority() {

@@ -1,5 +1,6 @@
 package com.kirillalekseev.spring.security.controller;
 
+import com.kirillalekseev.spring.security.entity.Authorities;
 import com.kirillalekseev.spring.security.entity.User;
 import com.kirillalekseev.spring.security.service.PasswordHasher;
 import com.kirillalekseev.spring.security.service.UserService;
@@ -69,6 +70,10 @@ public class MyController {
     public String saveUser(@ModelAttribute("user")User user ){
         user.setPassword(hashPassword(user.getPassword()));
         user.setEnabled((byte)1);
+        Authorities authorities = new Authorities();
+        authorities.setAuthority("ROLE_USER");
+        authorities.setAuthUser(user);
+        user.setUserAuthorities(authorities);
         userService.putOneUser(user);
         return "redirect:/manager_info";
     }

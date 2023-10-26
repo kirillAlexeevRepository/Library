@@ -7,9 +7,9 @@
 <h3>Information for All employees</h3>
 <br><br>
 <p> Username:${user.username} </p>
-<security:authorize access="hasRole('ADMIN')">
-<input type="button" value="Salary"
-                onclick="window.location.href = 'hr_info'">
+<security:authorize access="hasRole('USER')">
+<input type="button" value="Book"
+                onclick="window.location.href = 'book_info'">
 Only for HR staff
 </security:authorize>
 <br><br>

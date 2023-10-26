@@ -2,7 +2,6 @@ package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Authorities;
 import com.kirillalekseev.spring.security.entity.User;
-import com.kirillalekseev.spring.security.service.PasswordHasher;
 import com.kirillalekseev.spring.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,7 +21,6 @@ public class MyController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/")
     public String getInfoForAllEmps(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -33,12 +30,12 @@ public class MyController {
         return "view_for_all_users";
     }
 
-    @GetMapping("/hr_info")
+    @GetMapping("/book_info")
     public String getInfoOnlyForHR(Model model){
         List<User> allUser ;
         allUser = userService.getAllUsers();
         model.addAttribute("allUser" ,allUser);
-        return "view_for_hr";
+        return "view_book";
 
     }
     @GetMapping("/manager_info")

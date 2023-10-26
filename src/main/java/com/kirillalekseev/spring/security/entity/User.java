@@ -1,9 +1,10 @@
 package com.kirillalekseev.spring.security.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 
-    @Entity
+@Entity
     @Table(name = "users")
     public class User {
     @Id
@@ -31,7 +32,14 @@ import javax.persistence.*;
     @OneToOne(mappedBy = "authUser",cascade = CascadeType.ALL)
     private Authorities userAuthorities;
 
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private List<Item> itemList;
+
     public User() {
+
+    }
+    public User(List<Item> itemlist) {
+        this.itemList = itemlist;
     }
 
     public String getUsername() {

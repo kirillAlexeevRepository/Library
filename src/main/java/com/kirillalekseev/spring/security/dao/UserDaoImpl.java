@@ -1,5 +1,9 @@
 package com.kirillalekseev.spring.security.dao;
 
+import com.kirillalekseev.spring.security.dao.util.UserDAO;
+import com.kirillalekseev.spring.security.entity.Book;
+import com.kirillalekseev.spring.security.entity.Item;
+import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDAO{
+public class UserDaoImpl implements UserDAO {
 
     @Autowired
     SessionFactory sessionFactory;
@@ -44,4 +48,8 @@ public class UserDaoImpl implements UserDAO{
         Session session = sessionFactory.getCurrentSession();
         session.save(user);
     }
+
+
+
+
 }

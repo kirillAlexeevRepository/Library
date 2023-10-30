@@ -1,4 +1,4 @@
-package com.kirillalekseev.spring.security.service;
+package com.kirillalekseev.spring.security.technicalClasses;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

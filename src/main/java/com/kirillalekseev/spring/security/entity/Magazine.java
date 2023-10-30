@@ -1,6 +1,8 @@
 package com.kirillalekseev.spring.security.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "magazine")
@@ -26,7 +28,19 @@ public class Magazine {
     @Column(name = "photo_data")
     private byte[] photoData;
 
+    @OneToMany(cascade = CascadeType.ALL
+        ,mappedBy = "magazine",
+        fetch = FetchType.LAZY)
+    private List<Item> itemlist;
+
     public Magazine() {
+    }
+    public void addItemtoMagazine(Item item){
+        if(itemlist == null){
+            itemlist = new ArrayList<>();
+        }
+        itemlist.add(item);
+        item.setMagazine(this);
     }
 
     public Integer getMagazineId() {

@@ -1,10 +1,11 @@
 package com.kirillalekseev.spring.security.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
+    @Entity
     @Table(name = "users")
     public class User {
     @Id
@@ -32,14 +33,20 @@ import java.util.List;
     @OneToOne(mappedBy = "authUser",cascade = CascadeType.ALL)
     private Authorities userAuthorities;
 
-    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
-    private List<Item> itemList;
+    @OneToMany(cascade = CascadeType.ALL ,
+            mappedBy = "user",
+            fetch = FetchType.LAZY)
+    private List<Item> itemlist;
 
     public User() {
 
     }
-    public User(List<Item> itemlist) {
-        this.itemList = itemlist;
+    public void addItemtoUser(Item item){
+        if(itemlist ==null){
+            itemlist = new ArrayList<>();
+        }
+        itemlist.add(item);
+        item.setUser(this);
     }
 
     public String getUsername() {

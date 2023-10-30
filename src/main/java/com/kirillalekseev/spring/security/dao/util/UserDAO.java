@@ -1,5 +1,7 @@
-package com.kirillalekseev.spring.security.dao;
+package com.kirillalekseev.spring.security.dao.util;
 
+import com.kirillalekseev.spring.security.entity.Book;
+import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
 
 import java.util.List;
@@ -13,5 +15,9 @@ public interface UserDAO {
     void  putNewPassword(String password , String username);
 
     void putOneUser(User user);
+
+
+
+
 }
 

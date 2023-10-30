@@ -7,10 +7,16 @@
 <h3>Information for All employees</h3>
 <br><br>
 <p> Username:${user.username} </p>
-<security:authorize access="hasRole('USER')">
-<input type="button" value="Book"
+<security:authorize access="hasAnyRole('USER','ADMIN')">
+<input type="button" value="Books"
                 onclick="window.location.href = 'book_info'">
-Only for HR staff
+Library Book
+</security:authorize>
+<br><br>
+<security:authorize access="hasAnyRole('USER','ADMIN')">
+    <input type="button" value="Magazines"
+           onclick="window.location.href = 'magazine_info'">
+    Library Magazines
 </security:authorize>
 <br><br>
 <security:authorize access = "hasRole('ADMIN')">

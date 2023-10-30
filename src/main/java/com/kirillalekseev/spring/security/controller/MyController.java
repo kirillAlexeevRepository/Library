@@ -1,8 +1,12 @@
 package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Authorities;
+import com.kirillalekseev.spring.security.entity.Book;
+import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
-import com.kirillalekseev.spring.security.service.UserService;
+import com.kirillalekseev.spring.security.service.util.BookService;
+import com.kirillalekseev.spring.security.service.util.MagazineService;
+import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,12 +18,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-import static com.kirillalekseev.spring.security.service.PasswordHasher.hashPassword;
+import static com.kirillalekseev.spring.security.technicalClasses.PasswordHasher.hashPassword;
 
 @Controller
 public class MyController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookService bookService;
+
+    @Autowired
+    private MagazineService magazineService;
 
     @GetMapping("/")
     public String getInfoForAllEmps(Model model){
@@ -30,12 +40,20 @@ public class MyController {
         return "view_for_all_users";
     }
 
-    @GetMapping("/book_info")
-    public String getInfoOnlyForHR(Model model){
-        List<User> allUser ;
-        allUser = userService.getAllUsers();
-        model.addAttribute("allUser" ,allUser);
-        return "view_book";
+//    @GetMapping("/book_info")
+//    public String getInfoOnlyForHR(Model model){
+//        List<User> allUser ;
+//        allUser = userService.getAllUsers();
+//        model.addAttribute("allUser" ,allUser);
+//        return "view_book";
+//
+//    }
+     @GetMapping("/book_info")
+    public String getInfoAboutBookInLibrary(Model model){
+    List<Book> allBook ;
+    allBook = bookService.getAllBook();
+    model.addAttribute("allBook" ,allBook);
+    return "view_book";
 
     }
     @GetMapping("/manager_info")
@@ -75,4 +93,39 @@ public class MyController {
         return "redirect:/manager_info";
     }
 
+    @GetMapping("/addNewBook")
+    public String addNewBook(Model model){
+        Book book = new Book();
+        model.addAttribute("book" ,book);
+        return "Add-new-book";
+    }
+
+    @PostMapping("/saveBook")
+    public String saveNewBook(@ModelAttribute("book")Book book ){
+        book.setBookStatus("available");
+        bookService.putBook(book);
+        return "redirect:/book_info";
+    }
+
+    @GetMapping("/magazine_info")
+    public String getInfoAboutMagazineInLibrary(Model model) {
+        List<Magazine> allMagazine;
+        allMagazine = magazineService.getAllMagazine();
+        model.addAttribute("allMagazine", allMagazine);
+        return "view_magazine";
+    }
+
+    @GetMapping("/addNewMagazine")
+    public String addNewMagzine(Model model){
+        Magazine magazine = new Magazine();
+        model.addAttribute("magazine" ,magazine);
+        return "Add-new-magazine";
+    }
+
+    @PostMapping("/saveMagazine")
+    public String saveNewMagazine(@ModelAttribute("magazine") Magazine magazine ){
+        magazine.setStatus("available");
+        magazineService.putMagazine(magazine);
+        return "redirect:/magazine_info";
+    }
 }

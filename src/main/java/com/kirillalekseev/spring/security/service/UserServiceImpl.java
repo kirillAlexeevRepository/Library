@@ -1,7 +1,10 @@
 package com.kirillalekseev.spring.security.service;
 
-import com.kirillalekseev.spring.security.dao.UserDAO;
+import com.kirillalekseev.spring.security.dao.util.UserDAO;
+import com.kirillalekseev.spring.security.entity.Book;
+import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

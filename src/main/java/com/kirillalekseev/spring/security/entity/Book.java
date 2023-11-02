@@ -48,6 +48,10 @@ public class Book {
         return bookId;
     }
 
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
+    }
+
     public String getBookName() {
         return bookName;
     }

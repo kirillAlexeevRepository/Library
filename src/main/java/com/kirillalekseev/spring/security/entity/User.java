@@ -35,7 +35,7 @@ import java.util.List;
 
     @OneToMany(cascade = CascadeType.ALL ,
             mappedBy = "user",
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     private List<Item> itemlist;
 
     public User() {

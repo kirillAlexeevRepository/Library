@@ -13,17 +13,28 @@
             <th>Status</th>
     </tr>
 <c:forEach var="books" items="${allBook}">
+
+    <c:url var="requestToTake" value="requestToTake">
+        <c:param name="bookId" value="${books.bookId}"/>
+    </c:url>
     <tr>
         <td>${books.bookName}
         <td>${books.author}
         <td>${books.amount}
         <td>${books.bookStatus}
+            <security:authorize access="hasRole('USER')" >
+        <td><input type="button" value="Request to Take"
+                   onclick="window.location.href = '${requestToTake}'"/>
+        </security:authorize>
+
     </tr>
 </c:forEach>
+    <security:authorize access="hasRole('ADMIN')" >
     <c:url var="addNewBookButton" value="addNewBook">
     </c:url>
-    <td><input type="button" value="Add new Book In Library"
+    <se><input type="button" value="Add new Book In Library"
                onclick="window.location.href = '${addNewBookButton}'"/>
+    </security:authorize>
 </table>
 
 

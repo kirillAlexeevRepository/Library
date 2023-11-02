@@ -33,8 +33,9 @@
     </c:url>
     <td><input type="button" value="add new user"
                onclick="window.location.href = '${addNewUserButton}'"/>
-
-
+        <td><input type="button" value="Requests"
+               onclick="window.location.href = 'take_return_requests'">
+        Request to Take and Return
 </table>
 </body>
 </html>

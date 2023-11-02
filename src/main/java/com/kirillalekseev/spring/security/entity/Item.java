@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item  implements  Comparable<Item>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
@@ -37,15 +37,12 @@ public class Item {
     public Integer getItemId() {
         return itemId;
     }
-
     public Book getBook() {
         return book;
     }
-
     public void setBook(Book book) {
         this.book = book;
     }
-
     public Magazine getMagazine() {
         return magazine;
     }
@@ -79,10 +76,15 @@ public class Item {
     }
 
     @Override
+    public int compareTo(Item other) {
+        return Integer.compare(this.itemId , other.itemId);
+    }
+
+    @Override
     public String toString() {
         return "Item{" +
                 "itemId=" + itemId +
-                ", book=" + book +
+//                ", book=" + book +
                 ", magazine=" + magazine +
                 ", itemStatus='" + itemStatus + '\'' +
                 ", user=" + user +

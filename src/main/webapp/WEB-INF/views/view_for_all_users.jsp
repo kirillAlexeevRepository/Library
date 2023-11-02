@@ -4,7 +4,7 @@
 <body>
 
 
-<h3>Information for All employees</h3>
+<h3>Information for All Library Users</h3>
 <br><br>
 <p> Username:${user.username} </p>
 <security:authorize access="hasAnyRole('USER','ADMIN')">
@@ -17,6 +17,12 @@ Library Book
     <input type="button" value="Magazines"
            onclick="window.location.href = 'magazine_info'">
     Library Magazines
+</security:authorize>
+<br><br>
+<security:authorize access="hasRole('USER')">
+    <input type="button" value="My Items"
+           onclick="window.location.href = 'users_item_info'">
+    Items which one i taked or requested
 </security:authorize>
 <br><br>
 <security:authorize access = "hasRole('ADMIN')">

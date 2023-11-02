@@ -20,10 +20,12 @@
         <td>${magazine.status}
     </tr>
 </c:forEach>
+    <security:authorize access="hasRole('ADMIN')" >
     <c:url var="addNewMagazineButton" value="addNewMagazine">
     </c:url>
     <td><input type="button" value="Add new Magazine In Library"
                onclick="window.location.href = '${addNewMagazineButton}'"/>
+    </security:authorize>
 </table>
 
 

@@ -39,6 +39,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/").hasAnyRole("USER","ADMIN")
                 .antMatchers("/book_info").hasAnyRole("USER","ADMIN")
                 .antMatchers("/magazines_info").hasAnyRole("USER","ADMIN")
+                .antMatchers("users_item_info").hasRole("USER")
+                .antMatchers("Add-new-book").hasRole("ADMIN")
+                .antMatchers("Add-new-magazine").hasRole("ADMIN")
                 .antMatchers("/manager_info/**").hasRole("ADMIN")
                 .and().formLogin().permitAll();
     }

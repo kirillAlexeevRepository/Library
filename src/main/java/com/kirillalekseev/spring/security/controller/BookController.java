@@ -73,6 +73,4 @@ public class BookController {
 
          return "redirect:/users_item_info";
     }
-
-
 }

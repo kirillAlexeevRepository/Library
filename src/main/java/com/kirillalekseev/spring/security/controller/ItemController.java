@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,28 @@ public class ItemController {
         model.addAttribute("magazineList" , magazineList);
 
         return "user-items";
+    }
+
+    @GetMapping("/take_return_requests")
+    public String takeReturnRequests(Model model){
+        List <Item> ItemsList = itemService.getReturnsRequestsItems();
+        model.addAttribute("ItemsList",ItemsList);
+        //Все айтемы со статусом  Reqested to Take  или  Reqested to Return
+        return "take-return-request";
+    }
+    @GetMapping("/acceptRequest")
+    public String acceptRequest(@RequestParam("ItemId") Integer ItemId,
+                                @RequestParam("ItemStatus") String ItemStatus){
+        itemService.acceptRequest(ItemId ,ItemStatus);
+
+        return "redirect:/take_return_requests";
+    }
+    @GetMapping("/declineRequest")
+    public String declineRequest(@RequestParam("ItemId") Integer ItemId,
+                                 @RequestParam("ItemStatus") String ItemStatus){
+        itemService.declineRequest(ItemId,ItemStatus);
+
+        return "redirect:/take_return_requests";
     }
 
 }

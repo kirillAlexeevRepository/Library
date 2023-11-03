@@ -60,7 +60,7 @@ public class BookDaoImpl implements BookDAO {
     @Override
     public void setBookItemReturn(Integer bookId, String username) {
         Session session = sessionFactory.getCurrentSession();
-        String sql = "update Item SET item_status = 'requested to return' where book_id = :book_id and username = :Username";
+        String sql = "update item SET item_status = 'requested to return' where book_id = :book_id and username = :Username";
         session.createNativeQuery(sql)
                 .setParameter("book_id" ,bookId )
                 .setParameter("Username" ,username)

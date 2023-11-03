@@ -9,21 +9,26 @@
 <table>
     <tr>
             <th>Title of the book</th>
-            <th>Book's creator </th>
-            <th>Total</th>
+            <th>Username who requested</th>
             <th>Status</th>
     </tr>
-        <c:forEach var="books" items="${bookList}">
-    <c:url var="requestToReturnBook" value="requestToReturnBook">
-        <c:param name="bookId" value="${books.bookId}"/>
+        <c:forEach var="Items" items="${ItemsList}">
+    <c:url var="acceptRequest" value="acceptRequest">
+        <c:param name="ItemId" value="${Items.itemId}"/>
+        <c:param name="ItemStatus" value="${Items.itemStatus}"/>
+    </c:url>
+    <c:url var="declineRequest" value="declineRequest">
+        <c:param name="ItemId" value="${Items.itemId}"/>
+        <c:param name="ItemStatus" value="${Items.itemStatus}"/>
     </c:url>
     <tr>
-        <td>${books.bookName}
-        <td>${books.author}
-        <td>${books.amount}
-        <td>${books.bookStatus}
-        <td><input type="button" value="Request to Return"
-                   onclick="window.location.href = '${requestToReturnBook}'"/>
+        <td>${Items.book.bookName}
+        <td>${Items.user.username}
+        <td>${Items.itemStatus}
+        <td><input type="button" value="accept"
+                   onclick="window.location.href = '${acceptRequest}'"/>
+        <td><input type="button" value="decline"
+                   onclick="window.location.href = '${declineRequest}'"/>
     </tr>
         </c:forEach>
 </table>
@@ -33,24 +38,20 @@
 <table>
     <tr>
         <th>Title of the Magazines</th>
-        <th>Magazines creator </th>
-        <th>Total</th>
+        <th>Username who requested</th>
         <th>Status</th>
     </tr>
-        <c:forEach var="magazines" items="${magazineList}">
-
-        <c:url var="requestToReturnMagazine" value="requestToReturnMagazine">
-            <c:param name="magazineId" value="${magazines.magazineId}"/>
-        </c:url>
+    <c:forEach var="Items" items="${ItemsList}">
         <tr>
-            <td>${magazines.magazineName}
-            <td>${magazines.author}
-            <td>${magazines.amount}
-            <td>${magazines.status}
-            <td><input type="button" value="Request to Return"
-                       onclick="window.location.href = '${requestToReturnMagazine}'"/>
+            <td>${Items.magazine.magazineName}
+            <td>${Items.user.username}
+            <td>${Items.itemStatus}
+            <td><input type="button" value="accept"
+                       onclick="window.location.href = '${acceptRequest}'"/>
+            <td><input type="button" value="decline"
+                       onclick="window.location.href = '${declineRequest}'"/>
         </tr>
-        </c:forEach>
+    </c:forEach>
 </table>
 </body>
 </html>

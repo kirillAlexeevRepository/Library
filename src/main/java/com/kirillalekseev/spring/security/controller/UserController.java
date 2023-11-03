@@ -1,6 +1,7 @@
 package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Authorities;
+import com.kirillalekseev.spring.security.entity.Item;
 import com.kirillalekseev.spring.security.entity.User;
 import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,5 @@ public class UserController {
         return "redirect:/manager_info";
     }
 
-    @GetMapping("/take_return_requests")
-    public String takeReturnRequests(){
 
-        return "take-return-request";
-    }
 }

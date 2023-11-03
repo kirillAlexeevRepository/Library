@@ -20,4 +20,20 @@ public class ItemServiceImpl  implements ItemService {
     public List<Item> getUserItems(String username){
         return itemDAO.getUserItems(username);
     }
+    @Override
+    @Transactional
+    public List<Item>getReturnsRequestsItems(){
+        return itemDAO.getReturnsRequestsItems();
+    }
+    @Override
+    @Transactional
+    public  void acceptRequest(Integer ItemId ,String ItemStatus){
+        itemDAO.acceptRequest(ItemId,ItemStatus);
+    }
+
+    @Override
+    @Transactional
+    public void declineRequest(Integer itemId, String itemStatus) {
+        itemDAO.declineRequest(itemId , itemStatus);
+    }
 }

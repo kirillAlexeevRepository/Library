@@ -7,4 +7,10 @@ import java.util.List;
 public interface ItemDAO {
 
     List<Item> getUserItems(String username);
+
+    List<Item> getReturnsRequestsItems();
+
+    void acceptRequest(Integer ItemId ,String ItemStatus);
+
+    void declineRequest(Integer itemId, String itemStatus);
 }

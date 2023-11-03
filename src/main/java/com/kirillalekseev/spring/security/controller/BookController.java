@@ -47,7 +47,7 @@ public class BookController {
         return "redirect:/book_info";
     }
 
-    @GetMapping("/requestToTake")
+    @GetMapping("/requestToTakeBook")
     public String requestToTake(@RequestParam("bookId") Integer BookId ){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -58,7 +58,6 @@ public class BookController {
              //Должно выводится сообщение что данная книга уже тобой взята
              return "redirect:/book_info";
          }else {
-
              User user = userService.getOneUser(username);
              bookService.setBookItemRequest(BookId, user);
              return "redirect:/book_info";

@@ -20,7 +20,6 @@
     <tr>
         <td>${books.bookName}
         <td>${books.author}
-        <td>${books.amount}
         <td>${books.bookStatus}
         <td><input type="button" value="Request to Return"
                    onclick="window.location.href = '${requestToReturnBook}'"/>
@@ -34,7 +33,6 @@
     <tr>
         <th>Title of the Magazines</th>
         <th>Magazines creator </th>
-        <th>Total</th>
         <th>Status</th>
     </tr>
         <c:forEach var="magazines" items="${magazineList}">
@@ -45,7 +43,6 @@
         <tr>
             <td>${magazines.magazineName}
             <td>${magazines.author}
-            <td>${magazines.amount}
             <td>${magazines.status}
             <td><input type="button" value="Request to Return"
                        onclick="window.location.href = '${requestToReturnMagazine}'"/>

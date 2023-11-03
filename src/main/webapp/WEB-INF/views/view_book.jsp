@@ -14,7 +14,7 @@
     </tr>
 <c:forEach var="books" items="${allBook}">
 
-    <c:url var="requestToTake" value="requestToTake">
+    <c:url var="requestToTake" value="requestToTakeBook">
         <c:param name="bookId" value="${books.bookId}"/>
     </c:url>
     <tr>
@@ -26,7 +26,6 @@
         <td><input type="button" value="Request to Take"
                    onclick="window.location.href = '${requestToTake}'"/>
         </security:authorize>
-
     </tr>
 </c:forEach>
     <security:authorize access="hasRole('ADMIN')" >

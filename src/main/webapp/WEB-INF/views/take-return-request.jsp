@@ -12,23 +12,24 @@
             <th>Username who requested</th>
             <th>Status</th>
     </tr>
-        <c:forEach var="Items" items="${ItemsList}">
-    <c:url var="acceptRequest" value="acceptRequest">
-        <c:param name="ItemId" value="${Items.itemId}"/>
-        <c:param name="ItemStatus" value="${Items.itemStatus}"/>
+        <c:forEach var="Books" items="${bookList}">
+
+    <c:url var="acceptRequestBook" value="acceptRequest">
+        <c:param name="ItemId" value="${Books.itemId}"/>
+        <c:param name="ItemStatus" value="${Books.itemStatus}"/>
     </c:url>
-    <c:url var="declineRequest" value="declineRequest">
-        <c:param name="ItemId" value="${Items.itemId}"/>
-        <c:param name="ItemStatus" value="${Items.itemStatus}"/>
+    <c:url var="declineRequestBook" value="declineRequest">
+        <c:param name="ItemId" value="${Books.itemId}"/>
+        <c:param name="ItemStatus" value="${Books.itemStatus}"/>
     </c:url>
     <tr>
-        <td>${Items.book.bookName}
-        <td>${Items.user.username}
-        <td>${Items.itemStatus}
+        <td>${Books.book.bookName}
+        <td>${Books.user.username}
+        <td>${Books.itemStatus}
         <td><input type="button" value="accept"
-                   onclick="window.location.href = '${acceptRequest}'"/>
+                   onclick="window.location.href = '${acceptRequestBook}'"/>
         <td><input type="button" value="decline"
-                   onclick="window.location.href = '${declineRequest}'"/>
+                   onclick="window.location.href = '${declineRequestBook}'"/>
     </tr>
         </c:forEach>
 </table>
@@ -41,15 +42,23 @@
         <th>Username who requested</th>
         <th>Status</th>
     </tr>
-    <c:forEach var="Items" items="${ItemsList}">
+    <c:forEach var="magaz" items="${magazList}">
+        <c:url var="acceptRequestMagaz" value="acceptRequest">
+            <c:param name="ItemId" value="${magaz.itemId}"/>
+            <c:param name="ItemStatus" value="${magaz.itemStatus}"/>
+        </c:url>
+        <c:url var="declineRequestMagaz" value="declineRequest">
+            <c:param name="ItemId" value="${magaz.itemId}"/>
+            <c:param name="ItemStatus" value="${magaz.itemStatus}"/>
+        </c:url>
         <tr>
-            <td>${Items.magazine.magazineName}
-            <td>${Items.user.username}
-            <td>${Items.itemStatus}
+            <td>${magaz.magazine.magazineName}
+            <td>${magaz.user.username}
+            <td>${magaz.itemStatus}
             <td><input type="button" value="accept"
-                       onclick="window.location.href = '${acceptRequest}'"/>
+                       onclick="window.location.href = '${acceptRequestMagaz}'"/>
             <td><input type="button" value="decline"
-                       onclick="window.location.href = '${declineRequest}'"/>
+                       onclick="window.location.href = '${declineRequestMagaz}'"/>
         </tr>
     </c:forEach>
 </table>

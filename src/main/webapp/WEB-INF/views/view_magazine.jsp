@@ -13,11 +13,18 @@
             <th>Status</th>
     </tr>
 <c:forEach var="magazine" items="${allMagazine}">
+    <c:url var="requestToTake" value="requestToTakeMagazine">
+        <c:param name="MagazineId" value="${magazine.magazineId}"/>
+    </c:url>
     <tr>
         <td>${magazine.magazineName}
         <td>${magazine.author}
         <td>${magazine.amount}
         <td>${magazine.status}
+        <security:authorize access="hasRole('USER')" >
+        <td><input type="button" value="Request to Take"
+                   onclick="window.location.href = '${requestToTake}'"/>
+            </security:authorize>
     </tr>
 </c:forEach>
     <security:authorize access="hasRole('ADMIN')" >

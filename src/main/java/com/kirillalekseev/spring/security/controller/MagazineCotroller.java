@@ -1,8 +1,12 @@
 package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Magazine;
+import com.kirillalekseev.spring.security.entity.User;
 import com.kirillalekseev.spring.security.service.util.MagazineService;
+import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,8 @@ public class MagazineCotroller {
 
     @Autowired
     private MagazineService magazineService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/magazine_info")
     public String getInfoAboutMagazineInLibrary(Model model) {
@@ -40,13 +46,28 @@ public class MagazineCotroller {
         return "redirect:/magazine_info";
     }
 
+    @GetMapping("/requestToTakeMagazine")
+    public String requestToTakeMagazine(@RequestParam("MagazineId") Integer MagazineId ) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
-
+        List<Integer> magazinIdList = magazineService.getMagazineIdFromItems(username);
+        if (magazinIdList.contains(MagazineId)) {
+            //Должно выводится сообщение что данный журнал уже тобой взят
+        } else {
+            User user = userService.getOneUser(username);
+            magazineService.setMagazineItemRequest(MagazineId, user);
+        }
+        return "redirect:/magazine_info";
+    }
     @GetMapping("/requestToReturnMagazine")
     public String requestToReturn(@RequestParam("magazineId") Integer magazineId){
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        magazineService.setMagazineItemReturn(magazineId , username);
 
         return "redirect:/users_item_info";
     }
 }
+

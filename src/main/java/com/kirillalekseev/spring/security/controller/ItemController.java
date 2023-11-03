@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Controller
 public class ItemController {
-
     @Autowired
     ItemService itemService;
-
     @GetMapping("users_item_info")
     public String getUserItem(Model model){
 
@@ -44,17 +41,25 @@ public class ItemController {
                 magazineList.add(magazine);
             }
         }
-
         model.addAttribute("bookList",bookList);
         model.addAttribute("magazineList" , magazineList);
 
         return "user-items";
     }
-
     @GetMapping("/take_return_requests")
     public String takeReturnRequests(Model model){
         List <Item> ItemsList = itemService.getReturnsRequestsItems();
-        model.addAttribute("ItemsList",ItemsList);
+        List<Item> bookList = new ArrayList<>();
+        List<Item>magazList = new ArrayList<>();
+        for(Item item:ItemsList){
+            if(item.getBook()!= null){
+                bookList.add(item);
+            }else{
+               magazList.add(item);
+            }
+        }
+        model.addAttribute("bookList",bookList);
+        model.addAttribute("magazList",magazList);
         //Все айтемы со статусом  Reqested to Take  или  Reqested to Return
         return "take-return-request";
     }
@@ -72,5 +77,4 @@ public class ItemController {
 
         return "redirect:/take_return_requests";
     }
-
 }

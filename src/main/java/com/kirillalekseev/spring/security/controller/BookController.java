@@ -11,11 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -41,14 +43,18 @@ public class BookController {
     }
 
     @PostMapping("/saveBook")
-    public String saveNewBook(@ModelAttribute("book")Book book ){
-        book.setBookStatus("available");
-        bookService.putBook(book);
-        return "redirect:/book_info";
+    public String saveNewBook(@Valid @ModelAttribute("book")Book book , BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "Add-new-book";
+        }else {
+            book.setBookStatus("available");
+            bookService.putBook(book);
+            return "redirect:/book_info";
+        }
     }
 
     @GetMapping("/requestToTakeBook")
-    public String requestToTake(@RequestParam("bookId") Integer BookId ){
+    public String requestToTake(@RequestParam("bookId") Integer BookId  ){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -64,11 +70,11 @@ public class BookController {
          }
     }
     @GetMapping("/requestToReturnBook")
-    public String requestToReturn(@RequestParam("bookId") Integer BookId){
+    public String requestToReturn(@RequestParam("bookId") Integer BookId , @RequestParam("bookStatus") String bookStatus){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        bookService.setBookItemReturn(BookId ,username);
+        bookService.setBookItemReturn(BookId ,username ,bookStatus);
 
          return "redirect:/users_item_info";
     }

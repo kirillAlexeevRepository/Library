@@ -14,5 +14,5 @@ public interface BookDAO {
 
     List<Integer> getBookIdFromItems(String username);
 
-    void setBookItemReturn(Integer bookId ,String username);
+    void setBookItemReturn(Integer bookId ,String username ,String bookStatus);
 }

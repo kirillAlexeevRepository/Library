@@ -43,13 +43,12 @@ public class MagazineDaoImpl implements MagazineDAO {
                 .getResultList();
         return magazineIdFromItems;
     }
-
     @Override
     public void setMagazineItemRequest(Integer magazineId, User user) {
         Session session =sessionFactory.getCurrentSession();
         List<Item> itemList;
-
-        itemList = session.createQuery("from Item where magazine.magazineId = :magazine_id and itemStatus = 'In Library'", Item.class)
+        itemList = session.createQuery("from Item where magazine.magazineId = :magazine_id " +
+                        "and itemStatus = 'In Library'", Item.class)
                 .setParameter("magazine_id",magazineId).getResultList();
 
         Collections.sort(itemList);
@@ -61,11 +60,17 @@ public class MagazineDaoImpl implements MagazineDAO {
 
          session.update(firstAvalibleItem);
     }
-
     @Override
-    public void setMagazineItemReturn(Integer magazineId, String username) {
+    public void setMagazineItemReturn(Integer magazineId, String username ,String magazineStatus) {
         Session session = sessionFactory.getCurrentSession();
-        String sql ="UPDATE item SET item_status = 'requested to return' WHERE magazine_id = :magazineId and username = :username" ;
+        String sql;
+        if(!magazineStatus.equals("requested to take")){
+            sql= "UPDATE item SET item_status = 'requested to return' WHERE magazine_id = :magazineId" +
+                    " and username = :username" ;
+        }else {
+            sql= "UPDATE item SET item_status = 'In Library' , username = null  WHERE magazine_id = :magazineId" +
+                    " and username = :username" ;
+        }
         session.createNativeQuery(sql)
                 .setParameter("magazineId",magazineId)
                 .setParameter("username",username)

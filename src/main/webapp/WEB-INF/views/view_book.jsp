@@ -9,7 +9,6 @@
     <tr>
             <th>Title of the book</th>
             <th>Book's creator </th>
-            <th>Total</th>
             <th>Status</th>
     </tr>
 <c:forEach var="books" items="${allBook}">

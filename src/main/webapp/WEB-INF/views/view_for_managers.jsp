@@ -7,7 +7,7 @@
 <h3>Here you Can See  Performance </h3>
 <table>
     <tr>
-        <th>Username</th>
+        <th>Email</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Phone Number</th>
@@ -16,6 +16,9 @@
 
         <c:url var="changePasswordButton" value="change_password">
             <c:param name="username" value="${user.username}"/>
+            <c:param name="firstName" value="${user.firstName}"/>
+            <c:param name="lastName" value="${user.lastName}"/>
+            <c:param name="phoneNumber" value="${user.phoneNumber}"/>
         </c:url>
 
         <tr>

@@ -11,10 +11,13 @@
 
 <form:form action = "saveMagazine" modelAttribute="magazine">
     Title of the magazines <form:input path="magazineName" />
+    <form:errors path="magazineName"/>
     <br><br>
     Magazines creator <form:input path="author"/>
+    <form:errors path="author"/>
     <br><br>
     Total <form:input path="amount"/>
+    <form:errors path="amount"/>
     <br><br>
     <input type="submit" value="OK">
 </form:form>

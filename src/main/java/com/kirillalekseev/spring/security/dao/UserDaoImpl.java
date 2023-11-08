@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.kirillalekseev.spring.security.technicalClasses.PasswordHasher.hashPassword;
+
 @Repository
 public class UserDaoImpl implements UserDAO {
 

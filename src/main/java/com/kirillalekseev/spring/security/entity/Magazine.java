@@ -1,6 +1,7 @@
 package com.kirillalekseev.spring.security.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,19 @@ public class Magazine {
     @Column(name ="magazine_id")
     private Integer magazineId;
 
+    @NotBlank(message = "it's required field")
+    @Pattern(regexp = "^[A-Za-zА-Яа-я\\s\\-]{2,20}$",message = "2-20 characters,letters,space,hyphen.")
     @Column(name = "magazine_name")
     private String magazineName;
 
+    @NotBlank(message = "it's required field")
+    @Pattern(regexp = "^[A-Za-zА-Яа-я\\s\\-]{2,20}$", message  = "2-20 characters,letters,space,hyphen." )
     @Column(name = "author")
     private String author;
 
+    @NotNull(message = "it's required field")
+    @Min(value = 1 ,message = "must be greater then 0")
+    @Max(value = 20 , message = "must be less then 21")
     @Column(name = "amount")
     private Integer amount;
 

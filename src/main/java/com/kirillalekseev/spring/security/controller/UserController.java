@@ -9,10 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.kirillalekseev.spring.security.technicalClasses.PasswordHasher.hashPassword;
@@ -51,21 +53,29 @@ public class UserController {
         return "change_user_password";
     }
     @PostMapping("/putPassword")
-    public String putPasswordinUser(@ModelAttribute("user")User user ){
-        userService.putNewPassword(hashPassword(user.getPassword()), user.getUsername());
-        return"redirect:/manager_info";
+    public String putPasswordinUser(@Valid @ModelAttribute("user")User user , BindingResult bindingResult ){
+        if(bindingResult.hasErrors()){
+            return "change_user_password";
+        }else{
+            userService.putNewPassword(hashPassword(user.getPassword()), user.getUsername());
+            return"redirect:/manager_info";
+        }
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user")User user ){
-        user.setPassword(hashPassword(user.getPassword()));
+    public String saveUser(@Valid @ModelAttribute("user")User user ,BindingResult bindingResult ){
+        if(bindingResult.hasErrors()){
+            return "Add-new-user";
+        }else {
         user.setEnabled((byte)1);
+        user.setPassword(hashPassword(user.getPassword()));
         Authorities authorities = new Authorities();
         authorities.setAuthority("ROLE_USER");
         authorities.setAuthUser(user);
         user.setUserAuthorities(authorities);
         userService.putOneUser(user);
         return "redirect:/manager_info";
+        }
     }
 
 

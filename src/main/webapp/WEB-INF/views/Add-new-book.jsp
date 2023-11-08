@@ -11,12 +11,14 @@
 
 <form:form action = "saveBook" modelAttribute="book">
 
-
     Title of the book <form:input path="bookName" />
+    <form:errors path = "bookName"/>
     <br><br>
     Book's creator <form:input path="author"/>
+    <form:errors path = "author"/>
     <br><br>
     Total <form:input path="amount"/>
+    <form:errors path = "amount"/>
     <br><br>
     <input type="submit" value="OK">
 

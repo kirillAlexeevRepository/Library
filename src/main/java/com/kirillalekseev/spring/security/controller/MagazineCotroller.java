@@ -9,11 +9,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -31,21 +33,22 @@ public class MagazineCotroller {
         model.addAttribute("allMagazine", allMagazine);
         return "view_magazine";
     }
-
     @GetMapping("/addNewMagazine")
     public String addNewMagzine(Model model){
         Magazine magazine = new Magazine();
         model.addAttribute("magazine" ,magazine);
         return "Add-new-magazine";
     }
-
     @PostMapping("/saveMagazine")
-    public String saveNewMagazine(@ModelAttribute("magazine") Magazine magazine ){
-        magazine.setStatus("available");
-        magazineService.putMagazine(magazine);
-        return "redirect:/magazine_info";
+    public String saveNewMagazine(@Valid @ModelAttribute("magazine") Magazine magazine, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "Add-new-magazine";
+        }else {
+            magazine.setStatus("available");
+            magazineService.putMagazine(magazine);
+            return "redirect:/magazine_info";
+        }
     }
-
     @GetMapping("/requestToTakeMagazine")
     public String requestToTakeMagazine(@RequestParam("MagazineId") Integer MagazineId ) {
 
@@ -62,10 +65,11 @@ public class MagazineCotroller {
         return "redirect:/magazine_info";
     }
     @GetMapping("/requestToReturnMagazine")
-    public String requestToReturn(@RequestParam("magazineId") Integer magazineId){
+    public String requestToReturn(@RequestParam("magazineId") Integer magazineId
+            ,@RequestParam("magazineStatus") String magazineStatus ){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        magazineService.setMagazineItemReturn(magazineId , username);
+        magazineService.setMagazineItemReturn(magazineId , username ,magazineStatus);
 
         return "redirect:/users_item_info";
     }

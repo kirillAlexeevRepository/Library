@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +22,24 @@ public class MagazineDaoImpl implements MagazineDAO {
 
     public List<Magazine> getAllMagazine(){
         Session session = sessionFactory.getCurrentSession();
-        List<Magazine>  listMagazine;
-        listMagazine = session.createQuery("from Magazine" , Magazine.class).getResultList();
+        List<Magazine>  rawlistMagazine;
+        rawlistMagazine = session.createQuery("from Magazine" , Magazine.class).getResultList();
+        List<Magazine>  listMagazine = new ArrayList<>();
+        int magazineId;
+        for(Magazine magazine :rawlistMagazine){
+           magazineId = magazine.getMagazineId();
+           String sql ="SELECT COUNT(*) FROM item where magazine_id =:magazineId and username is null ";
+          Object count = session.createNativeQuery(sql)
+                  .setParameter("magazineId" ,magazineId)
+                  .getSingleResult();
+          if(((BigInteger)count).intValue() != 0){
+              magazine.setStatus("available");
+          }else {
+              magazine.setStatus("not available");
+          }
+          magazine.setAmount(((BigInteger) count).intValue());
+          listMagazine.add(magazine);
+        }
         return listMagazine;
     }
     public void putMagazine(Magazine magazine){

@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.*;
 
 @Repository
@@ -18,10 +19,26 @@ public class BookDaoImpl implements BookDAO {
 
     public List<Book> getAllBook(){
         Session session = sessionFactory.getCurrentSession();
-        List<Book>  listBook;
-        listBook = session.createQuery("from Book" , Book.class).getResultList();
+        List<Book>  rawlistBook ;
+        rawlistBook = session.createQuery("from Book" , Book.class).getResultList();
+
+        List<Book> listBook = new ArrayList<>();
+        Integer bookId;
+        for (Book book: rawlistBook) {
+            bookId = book.getBookId();
+            String sql = "SELECT COUNT(*) FROM item WHERE book_id =:bookId and item_status ='In Library' and username is null;";
+            Object count  =  session.createNativeQuery(sql).setParameter("bookId" ,bookId).getSingleResult();
+            if(((BigInteger)count).intValue() != 0){
+                book.setBookStatus("available");
+            }else {
+                book.setBookStatus("not available");
+            }
+            book.setAmount(((BigInteger)count).intValue());
+            listBook.add(book) ;
+        }
         return listBook;
     }
+    
     public void putBook(Book book){
         Session sesion = sessionFactory.getCurrentSession();
         for(int i = 0; i < book.getAmount(); i++){

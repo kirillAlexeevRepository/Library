@@ -99,6 +99,14 @@ public class Book {
         this.photoData = photoData;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     @Override
     public String toString() {
         return "Book{" +

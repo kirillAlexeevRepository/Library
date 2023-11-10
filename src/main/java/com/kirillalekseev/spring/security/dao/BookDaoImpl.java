@@ -6,6 +6,7 @@ import com.kirillalekseev.spring.security.entity.Item;
 import com.kirillalekseev.spring.security.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -54,7 +55,7 @@ public class BookDaoImpl implements BookDAO {
         BookIdListfromItems =  session.createQuery("select book.bookId from Item where user.username = : Username", Integer.class)
                 .setParameter("Username", username).getResultList();
         System.out.println(BookIdListfromItems);
-     return BookIdListfromItems;
+        return BookIdListfromItems;
     }
 
     public void setBookItemRequest(Integer book_id , User user){
@@ -87,5 +88,39 @@ public class BookDaoImpl implements BookDAO {
                 .setParameter("book_id" ,bookId )
                 .setParameter("Username" ,username)
                 .executeUpdate();
+    }
+    @Override
+    public void updateAmount(Integer bookId) {
+        Session session = sessionFactory.getCurrentSession();
+       Book book = session.get(Book.class ,bookId);
+       Item item = new Item();
+       item.setItemStatus("In Library");
+       book.addItemstoBook(item);
+       session.saveOrUpdate(book);
+    }
+
+    @Override
+    public void delBook(Integer bookId) {
+        Session session = sessionFactory.getCurrentSession();
+        Book book =session.get(Book.class ,bookId);
+
+        if(!(book.getBookStatus().equals("available"))) {
+            List <Item> itemlist ;
+            Query<Item> query = session.createQuery("from Item where book.bookId =:bookId and user.username is not null ");
+            itemlist= query.setParameter("bookId",bookId).getResultList();
+            if(itemlist.isEmpty()){
+                session.delete(book);
+            }else{
+                //выбрасываем сообщение что удалить не возможно книга на руках у людей
+            }
+        }else{
+            String sql ="DELETE FROM item " +
+                    "WHERE item_id " +
+                    "IN ( SELECT item_id FROM item" +
+                    " WHERE book_id = :bookId " +
+                    "AND username IS NULL ORDER BY item_id LIMIT 1);";
+            session.createNativeQuery(sql).setParameter("bookId", bookId)
+                    .executeUpdate();
+        }
     }
 }

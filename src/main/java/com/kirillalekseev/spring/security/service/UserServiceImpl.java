@@ -39,4 +39,12 @@ public class UserServiceImpl implements UserService {
     public void putOneUser(User user){
         userDAO.putOneUser(user);
     }
+
+    @Override
+    @Transactional
+    public void deleteOneUser(String username){
+        userDAO.deleteOneUser(username);
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -92,5 +93,42 @@ public class MagazineDaoImpl implements MagazineDAO {
                 .setParameter("magazineId",magazineId)
                 .setParameter("username",username)
                 .executeUpdate();
+    }
+    @Override
+    public void addMoreMagazine(Integer magazineId) {
+        Session session = sessionFactory.getCurrentSession();
+        Magazine magazine = session.get(Magazine.class,magazineId);
+        Item item = new Item();
+        item.setItemStatus("In Library");
+
+        magazine.addItemtoMagazine(item);
+        session.saveOrUpdate(magazine);
+
+    }
+    @Override
+    public void delMagazine(Integer magazineId) {
+    Session session = sessionFactory.getCurrentSession();
+    Magazine magazine = session.get(Magazine.class ,magazineId);
+
+    if(!(magazine.getStatus().equals("available"))){
+        List<Item> itemList;
+        Query<Item> query = session.createQuery("from Item where magazine.magazineId=:magazineId " +
+                "and user.username IS NOT NULL");
+        itemList = query.setParameter("magazineId",magazineId).getResultList();
+
+        if(itemList.isEmpty()){
+            session.delete(magazine);
+        }else{
+           // выбрасывааем сообщение что удалить журнал нельзя он на руках
+        }
+    }else{
+        String sql = "DELETE FROM item where item_id IN " +
+                "(SELECT item_id FROM item WHERE magazine_id = :magazineId AND username IS NULL ORDER BY item_id LIMIT 1);";
+        session.createNativeQuery(sql)
+                .setParameter("magazineId",magazineId)
+                .executeUpdate();
+
+    }
+
     }
 }

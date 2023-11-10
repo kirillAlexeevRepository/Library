@@ -4,7 +4,13 @@
 
 <body>
 
-<h2>Dear Employee , Please  enter your details</h2>
+<h2>Dear Admin , Please  enter magazines details</h2>
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="window.location.href = 'login'">
+        Logout
+    </button>
+</div>
 
 <br>
 <br>

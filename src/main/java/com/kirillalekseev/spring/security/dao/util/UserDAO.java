@@ -16,8 +16,6 @@ public interface UserDAO {
 
     void putOneUser(User user);
 
-
-
-
+    void deleteOneUser(String username);
 }
 

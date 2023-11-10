@@ -73,5 +73,16 @@ public class MagazineCotroller {
 
         return "redirect:/users_item_info";
     }
+    @GetMapping("/addMoreMagazine")
+    public String addMoreMagazine(@RequestParam("magazineId")Integer magazineId){
+    magazineService.addMoreMagazine(magazineId);
+    return "redirect:/magazine_info";
+    }
+
+    @GetMapping("/delOneMagazine")
+    public String delOneMagazine(@RequestParam("magazineId")Integer magazineId){
+        magazineService.delMagazine(magazineId);
+        return "redirect:/magazine_info";
+    }
 }
 

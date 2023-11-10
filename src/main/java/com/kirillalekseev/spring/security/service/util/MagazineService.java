@@ -14,4 +14,8 @@ public interface MagazineService {
     void setMagazineItemRequest(Integer MagazineId, User user);
 
     void setMagazineItemReturn(Integer magazineId, String username, String magazineStatus );
+
+    void addMoreMagazine(Integer magazineId);
+
+    void delMagazine(Integer magazineId);
 }

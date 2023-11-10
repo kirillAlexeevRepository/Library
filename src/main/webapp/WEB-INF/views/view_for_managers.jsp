@@ -5,6 +5,12 @@
 <html>
 <body>
 <h3>Here you Can See  Performance </h3>
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="window.location.href = 'login'">
+        Logout
+    </button>
+</div>
 <table>
     <tr>
         <th>Email</th>
@@ -20,6 +26,9 @@
             <c:param name="lastName" value="${user.lastName}"/>
             <c:param name="phoneNumber" value="${user.phoneNumber}"/>
         </c:url>
+        <c:url var="deleteUserButton" value="delete_user">
+            <c:param name="username" value="${user.username}"/>
+        </c:url>
 
         <tr>
             <td>${user.username}</td>
@@ -28,7 +37,8 @@
             <td>${user.phoneNumber}</td>
             <td><input type="button" value="change password"
                        onclick="window.location.href = '${changePasswordButton}'"/>
-
+            <td><input type="button" value="delete User"
+                       onclick="window.location.href = '${deleteUserButton}'"/>
         </tr>
 
     </c:forEach>

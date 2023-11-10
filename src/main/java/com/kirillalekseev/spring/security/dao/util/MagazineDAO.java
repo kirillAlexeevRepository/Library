@@ -14,4 +14,8 @@ public interface MagazineDAO {
     void setMagazineItemRequest(Integer magazineId, User user);
 
     void setMagazineItemReturn(Integer magazineId, String username ,String magazineStatus);
+
+    void addMoreMagazine(Integer magazineId);
+
+    void delMagazine(Integer magazineId);
 }

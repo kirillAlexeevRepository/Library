@@ -34,14 +34,22 @@ public class BookController {
     model.addAttribute("allBook" ,allBook);
     return "view_book";
     }
-
     @GetMapping("/addNewBook")
     public String addNewBook(Model model){
         Book book = new Book();
         model.addAttribute("book" ,book);
         return "Add-new-book";
     }
-
+    @GetMapping("/addMore")
+    public String addMoreBook(@RequestParam("bookId")Integer bookid){
+     bookService.updateAmount(bookid);
+       return "redirect:/book_info";
+    }
+    @GetMapping("/delBook")
+    public String delOneBook(@RequestParam("bookId")Integer bookId){
+         bookService.delBook(bookId);
+        return "redirect:/book_info";
+    }
     @PostMapping("/saveBook")
     public String saveNewBook(@Valid @ModelAttribute("book")Book book , BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -52,7 +60,6 @@ public class BookController {
             return "redirect:/book_info";
         }
     }
-
     @GetMapping("/requestToTakeBook")
     public String requestToTake(@RequestParam("bookId") Integer BookId  ){
 

@@ -19,18 +19,9 @@ public class LoginController {
     public String showLoginForm() {
         return "login";
     }
+
+    @GetMapping("/registration")
+    public String showRegistrationForm() {
+        return "redirect:/addNewUser";
+    }
 }
-//
-//    @PostMapping("/login")
-//    public String processLogin(Authentication authentication) {
-//        if(authentication  != null && authentication.isAuthenticated()){
-//            return "redirect:/";
-//        }
-//        return "redirect:/login?error";
-//    }
-//
-//    @GetMapping("/registration")
-//    public String showRegistrationForm() {
-//        return "registration";
-//    }
-//}

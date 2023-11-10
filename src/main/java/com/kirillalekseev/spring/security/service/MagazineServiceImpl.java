@@ -43,4 +43,16 @@ public class MagazineServiceImpl  implements MagazineService {
     public void setMagazineItemReturn(Integer magazineId, String username ,String magazineStatus) {
         magazineDAO.setMagazineItemReturn(magazineId ,username,magazineStatus );
     }
+
+    @Override
+    @Transactional
+    public void addMoreMagazine(Integer magazineId) {
+        magazineDAO.addMoreMagazine(magazineId);
+    }
+
+    @Override
+    @Transactional
+    public void delMagazine(Integer magazineId) {
+        magazineDAO.delMagazine(magazineId);
+    }
 }

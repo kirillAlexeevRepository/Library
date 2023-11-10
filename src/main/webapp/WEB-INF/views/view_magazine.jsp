@@ -3,8 +3,14 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h3>Here you Can See all Book in Library  </h3>
+<h3>Here you Can See all Magazines in Library  </h3>
 <br>
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="window.location.href = 'login'">
+        Logout
+    </button>
+</div>
 <table>
     <tr>
             <th>Title of the Magazine</th>
@@ -16,6 +22,12 @@
     <c:url var="requestToTake" value="requestToTakeMagazine">
         <c:param name="MagazineId" value="${magazine.magazineId}"/>
     </c:url>
+    <c:url var="addMore" value="addMoreMagazine">
+        <c:param name="magazineId" value="${magazine.magazineId}"/>
+    </c:url>
+    <c:url var="del" value="delOneMagazine">
+        <c:param name="magazineId" value="${magazine.magazineId}"/>
+    </c:url>
     <tr>
         <td>${magazine.magazineName}
         <td>${magazine.author}
@@ -24,6 +36,14 @@
         <security:authorize access="hasRole('USER')" >
         <td><input type="button" value="Request to Take"
                    onclick="window.location.href = '${requestToTake}'"/>
+            </security:authorize>
+        <security:authorize access="hasRole('ADMIN')" >
+        <td><input type="button" value="add"
+                   onclick="window.location.href = '${addMore}'"/>
+            </security:authorize>
+        <security:authorize access="hasRole('ADMIN')" >
+        <td><input type="button" value="del"
+                   onclick="window.location.href = '${del}'"/>
             </security:authorize>
     </tr>
 </c:forEach>

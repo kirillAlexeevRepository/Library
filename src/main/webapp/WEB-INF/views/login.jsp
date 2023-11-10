@@ -62,10 +62,11 @@
         <input type="password" id="password" name="password" required><br>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
         <button type="submit">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="/registration">Register</a></p>
+    <p>Don't have an account? <a href="registration">Register</a></p>
 </div>
 
 </body>

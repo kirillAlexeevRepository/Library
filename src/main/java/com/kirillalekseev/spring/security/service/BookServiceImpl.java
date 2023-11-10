@@ -39,4 +39,14 @@ public class BookServiceImpl implements BookService {
     public void setBookItemReturn(Integer bookId , String Username, String bookStatus ){
         bookDAO.setBookItemReturn(bookId ,Username , bookStatus);
     }
+    @Override
+    @Transactional
+    public void updateAmount(Integer bookId){
+        bookDAO.updateAmount( bookId);
+    }
+    @Override
+    @Transactional
+    public void delBook(Integer bookId) {
+        bookDAO.delBook( bookId);
+    }
 }

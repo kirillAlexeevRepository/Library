@@ -14,4 +14,8 @@ public interface BookService {
     List<Integer> getBookIdFromItems(String username);
 
     void setBookItemReturn(Integer BookId , String username ,String bookStatus);
+
+    void updateAmount(Integer bookId);
+
+    void delBook(Integer bookId);
 }

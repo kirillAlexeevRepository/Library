@@ -49,7 +49,11 @@ public class UserDaoImpl implements UserDAO {
         session.save(user);
     }
 
-
-
-
+    @Override
+    public void deleteOneUser(String username) {
+       Session session = sessionFactory.getCurrentSession();
+       session.createQuery("delete from User where username = :username")
+               .setParameter("username", username)
+               .executeUpdate();
+    }
 }

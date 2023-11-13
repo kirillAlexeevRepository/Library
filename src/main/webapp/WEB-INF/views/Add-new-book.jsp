@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE>
 <html>
 
@@ -14,8 +15,7 @@
 </div>
 <br>
 
-<form:form action = "saveBook" modelAttribute="book">
-
+<form:form action="saveBook" method="post" modelAttribute="book" enctype="multipart/form-data"  >
     Title of the book <form:input path="bookName" />
     <form:errors path = "bookName"/>
     <br><br>
@@ -25,9 +25,10 @@
     Total <form:input path="amount"/>
     <form:errors path = "amount"/>
     <br><br>
+    Book Image: <input type="file" name="imageFile" accept="image/*"/>
+    <br><br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     <input type="submit" value="OK">
-
 </form:form>
-
 </body>
 </html>

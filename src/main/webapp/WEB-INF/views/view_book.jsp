@@ -50,6 +50,7 @@
 </c:forEach>
     <security:authorize access="hasRole('ADMIN')" >
     <c:url var="addNewBookButton" value="addNewBook">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     </c:url>
     <td><input type="button" value="Add new Book In Library"
                onclick="window.location.href = '${addNewBookButton}'"/>

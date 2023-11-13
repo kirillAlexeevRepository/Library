@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -51,15 +53,26 @@ public class BookController {
         return "redirect:/book_info";
     }
     @PostMapping("/saveBook")
-    public String saveNewBook(@Valid @ModelAttribute("book")Book book , BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String saveNewBook(@Valid @ModelAttribute("book")Book book , BindingResult bindingResult
+    ,@RequestParam("imageFile") MultipartFile file){
+        if (bindingResult.hasErrors()) {
             return "Add-new-book";
-        }else {
+        } else {
+            if (!file.isEmpty()) {
+                try {
+                    byte[] imageData = file.getBytes();
+                    book.setPhotoData(imageData);
+                    // Другие операции с загруженным файлом
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Обработка ошибок при чтении файла
+                }
+            }
             book.setBookStatus("available");
             bookService.putBook(book);
             return "redirect:/book_info";
         }
-    }
+     }
     @GetMapping("/requestToTakeBook")
     public String requestToTake(@RequestParam("bookId") Integer BookId  ){
 

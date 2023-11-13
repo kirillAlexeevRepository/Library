@@ -118,6 +118,12 @@
       <version>6.1.0.Final</version>
     </dependency>
 
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.4</version> <!-- Укажите актуальную версию -->
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>springgood_course_security</finalName>

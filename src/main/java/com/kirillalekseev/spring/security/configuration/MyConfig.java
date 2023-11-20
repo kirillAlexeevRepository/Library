@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import java.beans.PropertyVetoException;
+import java.util.Base64;
 import java.util.Properties;
 
 @Configuration
@@ -94,3 +95,4 @@ public class MyConfig implements WebMvcConfigurer {
         return resolver;
     }
 }
+

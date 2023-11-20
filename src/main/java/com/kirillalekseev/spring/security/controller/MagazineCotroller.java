@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -27,10 +31,11 @@ public class MagazineCotroller {
     private UserService userService;
 
     @GetMapping("/magazine_info")
-    public String getInfoAboutMagazineInLibrary(Model model) {
+    public String getInfoAboutMagazineInLibrary(Model model , HttpServletRequest request, HttpSession session) {
         List<Magazine> allMagazine;
         allMagazine = magazineService.getAllMagazine();
         model.addAttribute("allMagazine", allMagazine);
+        session.setAttribute("previousPage", request.getRequestURL().toString());
         return "view_magazine";
     }
     @GetMapping("/addNewMagazine")
@@ -40,10 +45,17 @@ public class MagazineCotroller {
         return "Add-new-magazine";
     }
     @PostMapping("/saveMagazine")
-    public String saveNewMagazine(@Valid @ModelAttribute("magazine") Magazine magazine, BindingResult bindingResult){
+    public String saveNewMagazine(@Valid @ModelAttribute("magazine") Magazine magazine, BindingResult bindingResult,
+    @RequestParam("imageFile") MultipartFile file){
         if(bindingResult.hasErrors()){
             return "Add-new-magazine";
         }else {
+            if(!(file.isEmpty())){
+                try{
+                    magazine.setPhotoData(file.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }}
             magazine.setStatus("available");
             magazineService.putMagazine(magazine);
             return "redirect:/magazine_info";

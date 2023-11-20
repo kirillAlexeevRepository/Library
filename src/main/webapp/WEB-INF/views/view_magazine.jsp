@@ -1,7 +1,13 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
 <!DOCTYPE html>
 <html>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <body>
 <h3>Here you Can See all Magazines in Library  </h3>
 <br>
@@ -9,6 +15,11 @@
     <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
             onclick="window.location.href = 'login'">
         Logout
+    </button>
+</div>
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="goBack()">Back
     </button>
 </div>
 <table>
@@ -33,6 +44,11 @@
         <td>${magazine.author}
         <td>${magazine.amount}
         <td>${magazine.status}
+        <td>
+            <c:if test="${not empty magazine.photoData}">
+                <img style="width: 13%; height: 7%;" src="data:image/jpeg;base64,${Base64.encodeBase64String(magazine.photoData)}" alt="Book Image"/>
+            </c:if>
+        </td>
         <security:authorize access="hasRole('USER')" >
         <td><input type="button" value="Request to Take"
                    onclick="window.location.href = '${requestToTake}'"/>

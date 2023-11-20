@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
@@ -19,7 +21,7 @@ public class ItemController {
     @Autowired
     ItemService itemService;
     @GetMapping("users_item_info")
-    public String getUserItem(Model model){
+    public String getUserItem(Model model,HttpServletRequest request, HttpSession session){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -43,11 +45,12 @@ public class ItemController {
         }
         model.addAttribute("bookList",bookList);
         model.addAttribute("magazineList" , magazineList);
+        session.setAttribute("previousPage", request.getRequestURL().toString());
 
         return "user-items";
     }
     @GetMapping("/take_return_requests")
-    public String takeReturnRequests(Model model){
+    public String takeReturnRequests(Model model, HttpServletRequest request, HttpSession session){
         List <Item> ItemsList = itemService.getReturnsRequestsItems();
         List<Item> bookList = new ArrayList<>();
         List<Item>magazList = new ArrayList<>();
@@ -61,6 +64,7 @@ public class ItemController {
         model.addAttribute("bookList",bookList);
         model.addAttribute("magazList",magazList);
         //Все айтемы со статусом  Reqested to Take  или  Reqested to Return
+        session.setAttribute("previousPage", request.getRequestURL().toString());
         return "take-return-request";
     }
     @GetMapping("/acceptRequest")

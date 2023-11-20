@@ -124,6 +124,12 @@
       <version>1.4</version> <!-- Укажите актуальную версию -->
     </dependency>
 
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.15</version> <!-- Укажите актуальную версию -->
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>springgood_course_security</finalName>

@@ -1,23 +1,24 @@
 package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Book;
-import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.exception_handling.ItemIncorrectStatus;
+import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
 import com.kirillalekseev.spring.security.service.util.BookService;
-import com.kirillalekseev.spring.security.service.util.MagazineService;
 import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -30,11 +31,14 @@ public class BookController {
     private UserService userService;
 
      @GetMapping("/book_info")
-    public String getInfoAboutBookInLibrary(Model model){
+    public String getInfoAboutBookInLibrary(Model model , HttpServletRequest request, HttpSession session){
     List<Book> allBook ;
     allBook = bookService.getAllBook();
     model.addAttribute("allBook" ,allBook);
-    return "view_book";
+         String currentUrl = request.getRequestURL().toString();
+         model.addAttribute("currentUrl", currentUrl);
+         session.setAttribute("previousPage", currentUrl);
+         return "view_book";
     }
     @GetMapping("/addNewBook")
     public String addNewBook(Model model){
@@ -60,8 +64,7 @@ public class BookController {
         } else {
             if (!file.isEmpty()) {
                 try {
-                    byte[] imageData = file.getBytes();
-                    book.setPhotoData(imageData);
+                    book.setPhotoData(file.getBytes());
                     // Другие операции с загруженным файлом
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -74,15 +77,17 @@ public class BookController {
         }
      }
     @GetMapping("/requestToTakeBook")
-    public String requestToTake(@RequestParam("bookId") Integer BookId  ){
+    public String requestToTake( @RequestParam("bookId") Integer BookId ,Model model  ){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
          List<Integer> bookIdList = bookService.getBookIdFromItems(username);
+
          if(bookIdList.contains(BookId)){
-             //Должно выводится сообщение что данная книга уже тобой взята
-             return "redirect:/book_info";
+
+             throw  new NotAvailableStatusException("This book already in yours item List ");
+//             return "redirect:/book_info";
          }else {
              User user = userService.getOneUser(username);
              bookService.setBookItemRequest(BookId, user);
@@ -93,9 +98,16 @@ public class BookController {
     public String requestToReturn(@RequestParam("bookId") Integer BookId , @RequestParam("bookStatus") String bookStatus){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
         bookService.setBookItemReturn(BookId ,username ,bookStatus);
 
          return "redirect:/users_item_info";
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ItemIncorrectStatus> handleException(
+            NotAvailableStatusException exception){
+        ItemIncorrectStatus incorrectStatus = new ItemIncorrectStatus();
+        incorrectStatus.setInfo(exception.getMessage());
+        return new ResponseEntity<>(incorrectStatus, HttpStatus.NOT_FOUND);
     }
 }

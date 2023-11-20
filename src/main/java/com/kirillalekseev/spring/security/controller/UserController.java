@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,19 +33,21 @@ public class UserController {
     private ItemService itemService;
 
     @GetMapping("/")
-    public String getInfoForAllEmps(Model model) {
+    public String getInfoForAllEmps(Model model,HttpServletRequest request, HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.getOneUser(username);
         model.addAttribute("user", user);
+        session.setAttribute("previousPage", request.getRequestURL().toString());
         return "view_for_all_users";
     }
 
     @GetMapping("/manager_info")
-    public String getInfoOnlyForManagers(Model model) {
+    public String getInfoOnlyForManagers(Model model, HttpServletRequest request, HttpSession session) {
         List<User> allUser;
         allUser = userService.getAllUsers();
         model.addAttribute("allUser", allUser);
+        session.setAttribute("previousPage", request.getRequestURL().toString());
         return "view_for_managers";
     }
 
@@ -55,7 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/change_password")
-    public String change_user_password(@ModelAttribute("user") User user) {
+    public String change_user_password(@ModelAttribute("user") User user,HttpServletRequest request, HttpSession session) {
+        session.setAttribute("previousPage", request.getRequestURL().toString());
         return "change_user_password";
     }
 
@@ -70,8 +75,8 @@ public class UserController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult
-            , Authentication authentication) {
+    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+    Authentication authentications) {
         if (bindingResult.hasErrors()) {
             return "Add-new-user";
         } else {
@@ -83,8 +88,13 @@ public class UserController {
             user.setUserAuthorities(authorities);
             userService.putOneUser(user);
         }
-        if(authentication!= null){
-            return "redirect:/manager_info";
+        if(authentications != null){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            User authuser = userService.getOneUser(username);
+            if(authuser.getUserAuthorities().getAuthority().equals("ROLE_ADMIN")) {
+                return "redirect:/manager_info";
+            }else{ return "redirect:/login";}
         }else{ return "redirect:/login";}
     }
 

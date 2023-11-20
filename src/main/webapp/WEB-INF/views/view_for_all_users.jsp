@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <body>
-
-
 <h3>Information for All Library Users</h3>
 <br><br>
 <div style="display: flex; justify-content: space-between;">

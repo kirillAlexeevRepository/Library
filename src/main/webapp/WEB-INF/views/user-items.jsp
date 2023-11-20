@@ -2,6 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <body>
 <h2>Here you Can See yours items  </h2>
 <br>
@@ -9,6 +14,11 @@
     <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
             onclick="window.location.href = 'login'">
         Logout
+    </button>
+</div>
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="goBack()">Back
     </button>
 </div>
 <h2>Books</h2>

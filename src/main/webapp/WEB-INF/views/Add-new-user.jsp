@@ -1,12 +1,23 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE>
 <html>
-
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 <body>
 
 <h2> Please  enter new user details</h2>
 <br>
 <br>
+
+<div style="display: flex; justify-content: space-between;">
+    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+            onclick="goBack()">Back
+    </button>
+</div>
 
 <form:form action = "saveUser" modelAttribute="user">
 

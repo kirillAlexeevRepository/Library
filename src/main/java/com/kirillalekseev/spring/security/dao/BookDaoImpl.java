@@ -4,6 +4,7 @@ import com.kirillalekseev.spring.security.dao.util.BookDAO;
 import com.kirillalekseev.spring.security.entity.Book;
 import com.kirillalekseev.spring.security.entity.Item;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -64,15 +65,17 @@ public class BookDaoImpl implements BookDAO {
         itemlist  = session.createQuery("FROM Item WHERE book.bookId = :bookId AND itemStatus = 'In Library'", Item.class)
                 .setParameter("bookId", book_id)
                 .getResultList();
+        if(!(itemlist.isEmpty())){
         Collections.sort(itemlist);
-
         Item firstAvalibleItem = itemlist.get(0);
-
         firstAvalibleItem.setUser(user);
         firstAvalibleItem.setItemStatus("requested to take");
         user.addItemtoUser(firstAvalibleItem);
-
         session.update(firstAvalibleItem);
+        }else{
+            throw new NotAvailableStatusException("This book has Not Available Status " +
+                    "Try when status will be available");
+        }
     }
 
     @Override

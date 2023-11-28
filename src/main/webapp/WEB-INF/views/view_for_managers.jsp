@@ -9,7 +9,7 @@
     }
 </script>
 <body>
-<h3>Here you Can See  Performance </h3>
+<h3>Here you can see all Users information </h3>
 <div style="display: flex; justify-content: space-between;">
     <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
             onclick="window.location.href = 'login'">
@@ -22,6 +22,18 @@
     </button>
 </div>
 <table>
+    <c:url var="addNewUserButton" value="addNewUser">
+    </c:url>
+    <c:url var="takeReturnRequestsButton" value="take_return_requests">
+        <c:param name="username" value=""/>
+    </c:url>
+    <td><input type="button" value="add new user"
+               onclick="window.location.href = '${addNewUserButton}'"/>
+    <td><input type="button" value="Requests"
+               onclick="window.location.href = '${takeReturnRequestsButton}'">
+        Request to Take and Return
+
+
     <tr>
         <th>Email</th>
         <th>First Name</th>
@@ -39,6 +51,9 @@
         <c:url var="deleteUserButton" value="delete_user">
             <c:param name="username" value="${user.username}"/>
         </c:url>
+        <c:url var="takenItems" value="users_item_info">
+        <c:param name="username" value="${user.username}"/>
+        </c:url>
 
         <tr>
             <td>${user.username}</td>
@@ -49,16 +64,13 @@
                        onclick="window.location.href = '${changePasswordButton}'"/>
             <td><input type="button" value="delete User"
                        onclick="window.location.href = '${deleteUserButton}'"/>
+            <td><input type="button" value="items"
+                       onclick="window.location.href = '${takenItems}'"/>
         </tr>
 
     </c:forEach>
-    <c:url var="addNewUserButton" value="addNewUser">
-    </c:url>
-    <td><input type="button" value="add new user"
-               onclick="window.location.href = '${addNewUserButton}'"/>
-        <td><input type="button" value="Requests"
-               onclick="window.location.href = 'take_return_requests'">
-        Request to Take and Return
+
 </table>
+
 </body>
 </html>

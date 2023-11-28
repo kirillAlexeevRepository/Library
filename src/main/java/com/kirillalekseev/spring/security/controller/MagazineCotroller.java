@@ -2,18 +2,20 @@ package com.kirillalekseev.spring.security.controller;
 
 import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.exception_handling.ItemIncorrectStatus;
+import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
 import com.kirillalekseev.spring.security.service.util.MagazineService;
 import com.kirillalekseev.spring.security.service.util.UserService;
+import com.kirillalekseev.spring.security.technicalClasses.abstractStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +58,7 @@ public class MagazineCotroller {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }}
-            magazine.setStatus("available");
+            magazine.setStatus(abstractStatus.AVAILABLE.getDisplayName());
             magazineService.putMagazine(magazine);
             return "redirect:/magazine_info";
         }
@@ -69,7 +71,7 @@ public class MagazineCotroller {
 
         List<Integer> magazinIdList = magazineService.getMagazineIdFromItems(username);
         if (magazinIdList.contains(MagazineId)) {
-            //Должно выводится сообщение что данный журнал уже тобой взят
+            throw new NotAvailableStatusException("this magazine already in your item list ");
         } else {
             User user = userService.getOneUser(username);
             magazineService.setMagazineItemRequest(MagazineId, user);
@@ -82,19 +84,24 @@ public class MagazineCotroller {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         magazineService.setMagazineItemReturn(magazineId , username ,magazineStatus);
-
-        return "redirect:/users_item_info";
-    }
+        return "redirect:/users_item_info";}
     @GetMapping("/addMoreMagazine")
-    public String addMoreMagazine(@RequestParam("magazineId")Integer magazineId){
-    magazineService.addMoreMagazine(magazineId);
+    public String addMoreMagazine(@RequestParam("magazineId")Integer magazineId,@RequestParam ("amount")Integer amount){
+        if(amount<=69){magazineService.addMoreMagazine(magazineId);
+        }else{throw new NotAvailableStatusException("more then 70 magazines Library can't accommodate");}
     return "redirect:/magazine_info";
     }
-
     @GetMapping("/delOneMagazine")
     public String delOneMagazine(@RequestParam("magazineId")Integer magazineId){
         magazineService.delMagazine(magazineId);
         return "redirect:/magazine_info";
+    }
+    @ExceptionHandler
+    public ResponseEntity<ItemIncorrectStatus> handleException(
+            NotAvailableStatusException exception){
+        ItemIncorrectStatus incorrectStatus = new ItemIncorrectStatus();
+        incorrectStatus.setInfo(exception.getMessage());
+        return new ResponseEntity<>(incorrectStatus, HttpStatus.NOT_FOUND);
     }
 }
 

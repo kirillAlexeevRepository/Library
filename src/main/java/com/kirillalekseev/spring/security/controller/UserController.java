@@ -3,22 +3,25 @@ package com.kirillalekseev.spring.security.controller;
 import com.kirillalekseev.spring.security.entity.Authorities;
 import com.kirillalekseev.spring.security.entity.Item;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.exception_handling.ItemIncorrectStatus;
+import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
 import com.kirillalekseev.spring.security.service.util.ItemService;
 import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.kirillalekseev.spring.security.technicalClasses.PasswordHasher.hashPassword;
@@ -33,7 +36,7 @@ public class UserController {
     private ItemService itemService;
 
     @GetMapping("/")
-    public String getInfoForAllEmps(Model model,HttpServletRequest request, HttpSession session) {
+    public String openLibrary (Model model,HttpServletRequest request, HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User user = userService.getOneUser(username);
@@ -104,9 +107,31 @@ public class UserController {
             if(itemlist.isEmpty()){
                 userService.deleteOneUser(username);}
             else {
-                //Соббщение о том что у этого юзер есть взятые или запрошенные айтемы и удалить его нельзя}1
+                throw new NotAvailableStatusException("Can't Delete this User, (s)he has taken items or requests");
             }
         return "redirect:/manager_info";
     }
+    @GetMapping("/UsersWithRequests")
+    public String reqestsByUsers(
+            @RequestParam(value = "bookId",required = false)Integer bookid ,
+            @RequestParam(value = "magazineId",required = false)Integer magazineid ,
+            Model model){
+        List<User> UserList;
+        if(bookid != null  ){
+            UserList = userService.getUsersWithItems(bookid);
+        } else if (magazineid !=null) {
+            UserList = userService.getUsersWithItemsForMagazines(magazineid);
+        } else{
+            UserList = userService.getUsersWithItems();}
+        model.addAttribute("UserListWithItems",UserList);
+        return "userListWithItems";
+    }
 
+    @ExceptionHandler
+    public ResponseEntity<ItemIncorrectStatus> handleException(
+            NotAvailableStatusException exception){
+        ItemIncorrectStatus incorrectStatus = new ItemIncorrectStatus();
+        incorrectStatus.setInfo(exception.getMessage());
+        return new ResponseEntity<>(incorrectStatus, HttpStatus.NOT_FOUND);
+    }
 }

@@ -26,7 +26,7 @@ public class Magazine {
 
     @NotNull(message = "it's required field")
     @Min(value = -1 ,message = "must be greater then 0")
-    @Max(value = 20 , message = "must be less then 21")
+    @Max(value = 71 , message = "must be less then 21")
     @Column(name = "amount")
     private Integer amount;
 

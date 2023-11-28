@@ -13,7 +13,6 @@ public class LoginController {
         authentication.setAuthenticated(false);
         return "login";
     }
-
     @GetMapping("/registration")
     public String showRegistrationForm() {
         return "redirect:/addNewUser";

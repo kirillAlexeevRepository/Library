@@ -35,9 +35,13 @@
             <c:param name="bookId" value="${books.bookId}"/>
         </c:url>
         <c:url var="addMore" value="addMore">
+            <c:param name="amount" value="${books.amount}"/>
             <c:param name="bookId" value="${books.bookId}"/>
         </c:url>
         <c:url var="delBook" value="delBook">
+            <c:param name="bookId" value="${books.bookId}"/>
+        </c:url>
+        <c:url var="usersWhoTake" value="UsersWithRequests">
             <c:param name="bookId" value="${books.bookId}"/>
         </c:url>
         <tr>
@@ -56,6 +60,7 @@
             <security:authorize access="hasRole('ADMIN')">
                 <td><input type="button" value="add" onclick="window.location.href = '${addMore}'"/></td>
                 <td><input type="button" value="del" onclick="window.location.href = '${delBook}'"/></td>
+                <td><input type="button" value="users who take" onclick="window.location.href = '${usersWhoTake}'"/></td>
             </security:authorize>
         </tr>
     </c:forEach>

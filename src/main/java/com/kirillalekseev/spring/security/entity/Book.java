@@ -24,8 +24,8 @@ public class Book {
     private String author;
 
     @NotNull(message = "can't be empty")
-    @Min(value = -1 , message = "must be greater then 0 book or 0")
-    @Max(value = 20 , message = "must be less then 21 book")
+    @Min(value = -1 , message = "must be greater then 0 book or 0 and less then 21")
+    @Max(value = 71 , message = "must be greater then 0 book or 0 and less then 21")
     @Column(name = "amount")
     private Integer amount;
 

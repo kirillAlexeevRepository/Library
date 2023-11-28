@@ -33,7 +33,7 @@
     Book's creator <form:input path="author"/>
     <form:errors path = "author"/>
     <br><br>
-    Total <form:input path="amount"/>
+    Total <form:input path="amount" type="number" max="20"/>
     <form:errors path = "amount"/>
     <br><br>
     Book Image: <input type="file" name="imageFile" accept="image/*"/>

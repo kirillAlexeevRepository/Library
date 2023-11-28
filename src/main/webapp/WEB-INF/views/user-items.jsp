@@ -8,7 +8,7 @@
     }
 </script>
 <body>
-<h2>Here you Can See yours items  </h2>
+<h2>Here you Can See All Requests  </h2>
 <br>
 <div style="display: flex; justify-content: space-between;">
     <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
@@ -37,8 +37,10 @@
         <td>${books.bookName}
         <td>${books.author}
         <td>${books.bookStatus}
+            <security:authorize access="hasRole('USER')">
         <td><input type="button" value="Return back"
                    onclick="window.location.href = '${requestToReturnBook}'"/>
+        </security:authorize>
     </tr>
         </c:forEach>
 </table>
@@ -61,8 +63,11 @@
             <td>${magazines.magazineName}
             <td>${magazines.author}
             <td>${magazines.status}
+            <security:authorize access="hasRole('USER')">
             <td><input type="button" value="Return back"
                        onclick="window.location.href = '${requestToReturnMagazine}'"/>
+                </security:authorize>
+        </tr>
         </tr>
         </c:forEach>
 </table>

@@ -35,8 +35,12 @@
     </c:url>
     <c:url var="addMore" value="addMoreMagazine">
         <c:param name="magazineId" value="${magazine.magazineId}"/>
+        <c:param name="amount" value="${magazine.amount}"/>
     </c:url>
     <c:url var="del" value="delOneMagazine">
+        <c:param name="magazineId" value="${magazine.magazineId}"/>
+    </c:url>
+    <c:url var="usersWhoTake" value="UsersWithRequests">
         <c:param name="magazineId" value="${magazine.magazineId}"/>
     </c:url>
     <tr>
@@ -56,11 +60,10 @@
         <security:authorize access="hasRole('ADMIN')" >
         <td><input type="button" value="add"
                    onclick="window.location.href = '${addMore}'"/>
-            </security:authorize>
-        <security:authorize access="hasRole('ADMIN')" >
         <td><input type="button" value="del"
                    onclick="window.location.href = '${del}'"/>
-            </security:authorize>
+        <td><input type="button" value="users who take" onclick="window.location.href = '${usersWhoTake}'"/></td>
+    </security:authorize>
     </tr>
 </c:forEach>
     <security:authorize access="hasRole('ADMIN')" >

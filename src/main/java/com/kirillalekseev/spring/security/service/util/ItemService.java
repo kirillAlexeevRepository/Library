@@ -8,9 +8,10 @@ public interface ItemService {
 
     List<Item> getUserItems(String username);
 
-    List<Item> getReturnsRequestsItems();
+    List<Item> getReturnsRequestsItems(String username);
 
      void acceptRequest(Integer ItemId ,String ItemStatus);
 
     void declineRequest(Integer itemId, String itemStatus);
+
 }

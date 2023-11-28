@@ -17,5 +17,10 @@ public interface UserDAO {
     void putOneUser(User user);
 
     void deleteOneUser(String username);
+
+    List<User> getUsersWithItems();
+    List<User> getUsersWithItems(Integer bookId);
+
+    List<User> getUsersWithItemsForMagazines(Integer magazineId);
 }
 

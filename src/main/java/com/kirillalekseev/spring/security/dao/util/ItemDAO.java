@@ -8,7 +8,7 @@ public interface ItemDAO {
 
     List<Item> getUserItems(String username);
 
-    List<Item> getReturnsRequestsItems();
+    List<Item> getReturnsRequestsItems(String usename);
 
     void acceptRequest(Integer ItemId ,String ItemStatus);
 

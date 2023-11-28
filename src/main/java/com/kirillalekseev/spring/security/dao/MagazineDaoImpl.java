@@ -4,6 +4,9 @@ import com.kirillalekseev.spring.security.dao.util.MagazineDAO;
 import com.kirillalekseev.spring.security.entity.Item;
 import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
+import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
+import com.kirillalekseev.spring.security.technicalClasses.ItemStatus;
+import com.kirillalekseev.spring.security.technicalClasses.abstractStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -34,9 +37,9 @@ public class MagazineDaoImpl implements MagazineDAO {
                   .setParameter("magazineId" ,magazineId)
                   .getSingleResult();
           if(((BigInteger)count).intValue() != 0){
-              magazine.setStatus("available");
+              magazine.setStatus(abstractStatus.AVAILABLE.getDisplayName());
           }else {
-              magazine.setStatus("not available");
+              magazine.setStatus(abstractStatus.NOT_AVAILABLE.getDisplayName());
           }
           magazine.setAmount(((BigInteger) count).intValue());
           listMagazine.add(magazine);
@@ -47,7 +50,7 @@ public class MagazineDaoImpl implements MagazineDAO {
         Session sesion = sessionFactory.getCurrentSession();
         for(int i = 0; i < magazine.getAmount(); i++){
             Item item = new Item();
-            item.setItemStatus("In Library");
+            item.setItemStatus(ItemStatus.IN_LIBRARY.getDisplayName());
             magazine.addItemtoMagazine(item);
         }
         sesion.save(magazine);
@@ -65,15 +68,16 @@ public class MagazineDaoImpl implements MagazineDAO {
     public void setMagazineItemRequest(Integer magazineId, User user) {
         Session session =sessionFactory.getCurrentSession();
         List<Item> itemList;
+        String Status = ItemStatus.IN_LIBRARY.getDisplayName();
         itemList = session.createQuery("from Item where magazine.magazineId = :magazine_id " +
-                        "and itemStatus = 'In Library'", Item.class)
-                .setParameter("magazine_id",magazineId).getResultList();
+                        "and itemStatus = :Status", Item.class)
+                .setParameter("magazine_id",magazineId).setParameter("Status",Status).getResultList();
 
         Collections.sort(itemList);
         Item firstAvalibleItem = itemList.get(0);
 
          firstAvalibleItem.setUser(user);
-         firstAvalibleItem.setItemStatus("requested to take");
+         firstAvalibleItem.setItemStatus(ItemStatus.REQUESTED_TO_TAKE.getDisplayName());
          user.addItemtoUser(firstAvalibleItem);
 
          session.update(firstAvalibleItem);
@@ -82,14 +86,18 @@ public class MagazineDaoImpl implements MagazineDAO {
     public void setMagazineItemReturn(Integer magazineId, String username ,String magazineStatus) {
         Session session = sessionFactory.getCurrentSession();
         String sql;
-        if(!magazineStatus.equals("requested to take")){
-            sql= "UPDATE item SET item_status = 'requested to return' WHERE magazine_id = :magazineId" +
+        String Status;
+        if(!magazineStatus.equals(ItemStatus.REQUESTED_TO_TAKE.getDisplayName())){
+            Status = ItemStatus.REQUESTED_TO_RETURN.getDisplayName();
+            sql= "UPDATE item SET item_status = :Status WHERE magazine_id = :magazineId" +
                     " and username = :username" ;
         }else {
-            sql= "UPDATE item SET item_status = 'In Library' , username = null  WHERE magazine_id = :magazineId" +
+            Status = ItemStatus.IN_LIBRARY.getDisplayName();
+            sql= "UPDATE item SET item_status = :Status , username = null  WHERE magazine_id = :magazineId" +
                     " and username = :username" ;
         }
         session.createNativeQuery(sql)
+                .setParameter("Status",Status)
                 .setParameter("magazineId",magazineId)
                 .setParameter("username",username)
                 .executeUpdate();
@@ -99,7 +107,7 @@ public class MagazineDaoImpl implements MagazineDAO {
         Session session = sessionFactory.getCurrentSession();
         Magazine magazine = session.get(Magazine.class,magazineId);
         Item item = new Item();
-        item.setItemStatus("In Library");
+        item.setItemStatus(ItemStatus.IN_LIBRARY.getDisplayName());
 
         magazine.addItemtoMagazine(item);
         session.saveOrUpdate(magazine);
@@ -110,7 +118,7 @@ public class MagazineDaoImpl implements MagazineDAO {
     Session session = sessionFactory.getCurrentSession();
     Magazine magazine = session.get(Magazine.class ,magazineId);
 
-    if(!(magazine.getStatus().equals("available"))){
+    if(!(magazine.getStatus().equals(abstractStatus.AVAILABLE.getDisplayName()))){
         List<Item> itemList;
         Query<Item> query = session.createQuery("from Item where magazine.magazineId=:magazineId " +
                 "and user.username IS NOT NULL");
@@ -119,7 +127,7 @@ public class MagazineDaoImpl implements MagazineDAO {
         if(itemList.isEmpty()){
             session.delete(magazine);
         }else{
-           // выбрасывааем сообщение что удалить журнал нельзя он на руках
+           throw new NotAvailableStatusException("can't delete this magazine some people have it");
         }
     }else{
         String sql = "DELETE FROM item where item_id IN " +

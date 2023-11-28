@@ -6,6 +6,7 @@ import com.kirillalekseev.spring.security.exception_handling.ItemIncorrectStatus
 import com.kirillalekseev.spring.security.exception_handling.NotAvailableStatusException;
 import com.kirillalekseev.spring.security.service.util.BookService;
 import com.kirillalekseev.spring.security.service.util.UserService;
+import com.kirillalekseev.spring.security.technicalClasses.abstractStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +48,10 @@ public class BookController {
         return "Add-new-book";
     }
     @GetMapping("/addMore")
-    public String addMoreBook(@RequestParam("bookId")Integer bookid){
-     bookService.updateAmount(bookid);
+    public String addMoreBook(@RequestParam("bookId")Integer bookid,@RequestParam("amount")Integer amount){
+         if(amount<=69){
+             bookService.updateAmount(bookid);}
+         else {throw new NotAvailableStatusException("more then 70 books Library can't accommodate");}
        return "redirect:/book_info";
     }
     @GetMapping("/delBook")
@@ -65,13 +68,11 @@ public class BookController {
             if (!file.isEmpty()) {
                 try {
                     book.setPhotoData(file.getBytes());
-                    // Другие операции с загруженным файлом
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // Обработка ошибок при чтении файла
                 }
             }
-            book.setBookStatus("available");
+            book.setBookStatus(abstractStatus.AVAILABLE.getDisplayName());
             bookService.putBook(book);
             return "redirect:/book_info";
         }

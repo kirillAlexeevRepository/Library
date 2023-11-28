@@ -22,8 +22,8 @@ public class ItemServiceImpl  implements ItemService {
     }
     @Override
     @Transactional
-    public List<Item>getReturnsRequestsItems(){
-        return itemDAO.getReturnsRequestsItems();
+    public List<Item>getReturnsRequestsItems(String username){
+        return itemDAO.getReturnsRequestsItems(username);
     }
     @Override
     @Transactional
@@ -36,4 +36,5 @@ public class ItemServiceImpl  implements ItemService {
     public void declineRequest(Integer itemId, String itemStatus) {
         itemDAO.declineRequest(itemId , itemStatus);
     }
+
 }

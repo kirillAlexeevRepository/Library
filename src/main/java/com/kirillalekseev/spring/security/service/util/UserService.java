@@ -3,6 +3,7 @@ package com.kirillalekseev.spring.security.service.util;
 
 
 import com.kirillalekseev.spring.security.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -18,7 +19,9 @@ public interface UserService {
 
     void deleteOneUser(String username);
 
+    List<User> getUsersWithItems();
 
+    List<User> getUsersWithItems(Integer bookId);
 
-
+    List<User> getUsersWithItemsForMagazines(Integer magazineId);
 }

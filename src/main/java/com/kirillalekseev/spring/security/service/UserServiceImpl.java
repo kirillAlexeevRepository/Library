@@ -1,8 +1,6 @@
 package com.kirillalekseev.spring.security.service;
 
 import com.kirillalekseev.spring.security.dao.util.UserDAO;
-import com.kirillalekseev.spring.security.entity.Book;
-import com.kirillalekseev.spring.security.entity.Magazine;
 import com.kirillalekseev.spring.security.entity.User;
 import com.kirillalekseev.spring.security.service.util.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +44,20 @@ public class UserServiceImpl implements UserService {
         userDAO.deleteOneUser(username);
     }
 
+    @Override
+    @Transactional
+    public List<User> getUsersWithItems() {
+        return userDAO.getUsersWithItems();
+    }
+    @Override
+    @Transactional
+    public List<User> getUsersWithItems(Integer bookid) {
+        return userDAO.getUsersWithItems(bookid);
+    }
 
+    @Override
+    @Transactional
+    public List<User> getUsersWithItemsForMagazines(Integer magazineId) {
+        return userDAO.getUsersWithItemsForMagazines(magazineId);
+    }
 }
